@@ -1,0 +1,13 @@
+const express =require("express")
+const res = require("express/lib/response")
+const app = express()
+require("dotenv").config()
+const port= process.env.PORT || 5001
+
+app.get("/",(req,res)=>{
+    res.send("Hoş Geldiniz...");
+})
+
+app.listen(port, ()=> {
+    console.log('Server ${port} Portundan Başlatildi ...');
+})
