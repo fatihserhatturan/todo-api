@@ -5,6 +5,8 @@ require("dotenv").config()
 const port= process.env.PORT || 5001
 const todoRouter=require("./src/Routers/todoRouter")
 
+app.use(express.json())
+
 app.use("/api",todoRouter)
 
 app.get("/",(req,res)=>{
