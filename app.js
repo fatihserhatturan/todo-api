@@ -2,6 +2,7 @@ const express =require("express")
 const res = require("express/lib/response")
 const app = express()
 require("dotenv").config()
+require("./src/config/databaseConnection")
 const port= process.env.PORT || 5001
 const todoRouter=require("./src/Routers/todoRouter")
 
