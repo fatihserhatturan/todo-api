@@ -35,8 +35,11 @@ const todoAdd= async(req,res)=>{
 
 }
 const todoGetAll = async(req,res)=>{
+    const {page} = req.query
+    const limit=2
+    const skip=Number(page-1)*limit
 try {
-    const todoGetAll= await  todo.find({})
+    const todoGetAll= await  todo.find({}).limit(limit).skip(skip)
     return res.status(200).json({
         success:true,
         data:todoGetAll
@@ -77,8 +80,56 @@ const todoUpdate = async(req,res)=>{
 
 }
 
+const todoDelete = async(req,res)=>{
+
+    const{id}=req.params
+
+    try {
+        const todoDelete= await todo.findByIdAndDelete(id)
+        if(todoDelete){
+            return res.status(200).json({
+                success:true,
+                message:"Kayit Silindi"
+            })
+        }
+        else{
+            return res.status(400).json({
+                success:false,
+                message:"Kayit Silme Islemi Basarisiz:"+error
+            })
+        }
+
+    } catch (error) {
+        return res.status(500).json({
+            success:false,
+            message:"Kayit Silinemedi"
+        })
+
+    }
+}
+
+const todoGet = async(req,res)=>{
+    const{id}=req.params
+
+    const todoGet = await todo.findById(id)
+
+    if(todoGet){
+        return res.status(200).json(todoGet)
+    }
+
+    else {
+        return res.status(404).json({
+            success:true,
+            message:"Kayit Bulunamadi"
+        })
+    }
+
+}
+
 module.exports={
     todoAdd,
     todoGetAll,
-    todoUpdate
+    todoUpdate,
+    todoDelete,
+    todoGet
 }
