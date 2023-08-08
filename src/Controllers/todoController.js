@@ -34,9 +34,10 @@ const todoAdd= async(req,res)=>{
     }
 
 }
+
 const todoGetAll = async(req,res)=>{
     const {page} = req.query
-    const limit=2
+    const limit=5
     const skip=Number(page-1)*limit
 try {
     const todoGetAll= await  todo.find({}).limit(limit).skip(skip)
@@ -125,11 +126,31 @@ const todoGet = async(req,res)=>{
     }
 
 }
+const todoFilterCategory = async(req,res)=>{
+
+
+}
+const todoFilterImportance = async(req,res)=>{
+
+
+}
+const todoFilterLastday = async(req,res)=>{
+
+
+}
+const todoFilterCompleted = async(req,res)=>{
+
+
+}
 
 module.exports={
     todoAdd,
     todoGetAll,
     todoUpdate,
     todoDelete,
-    todoGet
+    todoGet,
+    todoFilterCategory,
+    todoFilterImportance,
+    todoFilterLastday,
+    todoFilterCompleted
 }
