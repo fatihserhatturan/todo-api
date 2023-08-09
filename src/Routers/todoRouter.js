@@ -14,4 +14,6 @@ router.get("/todo/:id",todoController.todoGet)
 
 router.post("/filter/category",filtercontroller.FilterCategory)
 
+router.post("/filter/importance",filtercontroller.filterİmportance)
+
 module.exports=router
