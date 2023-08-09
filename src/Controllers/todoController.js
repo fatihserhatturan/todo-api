@@ -126,31 +126,15 @@ const todoGet = async(req,res)=>{
     }
 
 }
-const todoFilterCategory = async(req,res)=>{
 
-
-}
-const todoFilterImportance = async(req,res)=>{
-
-
-}
-const todoFilterLastday = async(req,res)=>{
-
-
-}
-const todoFilterCompleted = async(req,res)=>{
-
-
-}
 
 module.exports={
     todoAdd,
     todoGetAll,
     todoUpdate,
     todoDelete,
-    todoGet,
-    todoFilterCategory,
-    todoFilterImportance,
-    todoFilterLastday,
-    todoFilterCompleted
+    todoGet
+
+
+
 }
