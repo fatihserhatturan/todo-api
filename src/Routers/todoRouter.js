@@ -1,6 +1,7 @@
 const router= require("express").Router()
 const todoController = require("../Controllers/todoController")
 const filtercontroller = require("../Controllers/filterController")
+const sortController = require("../Controllers/sortController")
 
 router.post("/todo",todoController.todoAdd)
 
@@ -15,5 +16,7 @@ router.get("/todo/:id",todoController.todoGet)
 router.post("/filter/category",filtercontroller.FilterCategory)
 
 router.post("/filter/importance",filtercontroller.filterİmportance)
+
+router.post("/filter/complete",filtercontroller.filterComplete)
 
 module.exports=router
