@@ -19,4 +19,8 @@ router.post("/filter/importance",filtercontroller.filterİmportance)
 
 router.post("/filter/complete",filtercontroller.filterComplete)
 
+router.get("/sort/early",sortController.sortEarly)
+
+router.get("/sort/late",sortController.sortLate)
+
 module.exports=router

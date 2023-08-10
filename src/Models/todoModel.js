@@ -29,7 +29,7 @@ const todoSchema = new mongoose.Schema({
       trim:true
    },
    lastday:{
-      type:String,
+      type:Date,
       required: true,
       trim:true
    },
