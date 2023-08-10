@@ -11,3 +11,4 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING,{
 .catch((err)=>{
     console.log("Veritabanina Bağlanilamadi:"+err);
 })
+

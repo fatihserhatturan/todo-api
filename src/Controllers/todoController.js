@@ -1,6 +1,10 @@
 const todo= require("../Models/todoModel")
+const Trello = require('node-trello');
+const trello = new Trello('3d03980882bec6776becfed7a8d74932', 'ATTAaa891ab7344037bc73fb2de5fe420722889d26ec907813d91ee208f5590638a7318EFFA0');
+const targetListID = '64d5113de931557c1c2dc7c7'
 
 const todoAdd= async(req,res)=>{
+
     console.log(req.body)
     try {
         const _todo= await todo.findOne({
@@ -18,13 +22,20 @@ const todoAdd= async(req,res)=>{
         .then(()=>{
 
             return res.status(201).json(todoAdd)
+
         })
+
+
         .catch((err)=>{
             return res.status(400).json({
                 success:false,
                 message:"Kayit Oluşturulurken Bir Hata Meydana Geldi..."+err
             })
         })
+        trello.post('/1/cards', { name:req.body.name , idList: targetListID }, (err, data) => {
+            if (err) throw err;
+            console.log('Kart oluşturuldu:', data);
+        });
 
     } catch (error) {
     return res.status(500).json({
@@ -56,8 +67,48 @@ try {
 }
 
 const todoUpdate = async(req,res)=>{
+
     const{id}=req.params
+
+
+
+
     try {
+        const targetCardName = await todo.findById(id);
+        console.log("girdi");
+        console.log(req.body.name)
+
+
+        if(req.body.name){
+            console.log("girdi");
+
+
+        trello.get(`/1/lists/${targetListID}/cards`, (err, cards) => {
+            if (err) {
+                console.error('Kartlar alinamadi:', err);
+            } else {
+                // Kart listesini döngü ile gez
+                console.log("girdi");
+                for (const card of cards) {
+                    console.log(card.name);
+                    if (card.name === targetCardName.name) {
+                        const targetCardID = card.id;
+                        console.log(`Hedef kartin ID'si: ${targetCardID}`);
+
+                        trello.put(`/1/cards/${targetCardID}`, { name:req.body.name }, (err, data) => {
+                            if (err) throw err;
+                            console.log('Kart güncellendi:', data);
+                        });
+                        break; // Eşleşme bulunduğunda döngüyü sonlandır
+                    }
+                }
+            }
+        });
+
+    }
+
+
+
         const todoUpdate=await todo.findByIdAndUpdate(id,req.body)
         if(todoUpdate){
             return res.status(200).json({
@@ -71,6 +122,7 @@ const todoUpdate = async(req,res)=>{
         })
 
 
+
     } catch (error) {
         return res.status(500).json({
             success: false,
@@ -79,6 +131,7 @@ const todoUpdate = async(req,res)=>{
 
     }
 
+
 }
 
 const todoDelete = async(req,res)=>{
@@ -86,6 +139,33 @@ const todoDelete = async(req,res)=>{
     const{id}=req.params
 
     try {
+        console.log("girdi")
+        trello.get(`/1/lists/${targetListID}/cards`, (err, cards) => {
+            if (err) {
+                console.error('Kartlar alinamadi:', err);
+            } else {
+                console.log("girdi")
+                console.log(id)
+
+                // Kart listesini döngü ile gez
+                for (const card of cards) {
+                    console.log("girdi")
+                    if (card.id === id) {
+                        //console.log("girdi")
+                        const targetCardID = card.id;
+                        console.log(`Hedef kartin ID'si: ${targetCardID}`);
+                        break; // Eşleşme bulunduğunda döngüyü sonlandır
+                    }
+                }
+            }
+        });
+
+
+        /*
+        trello.del(`/1/cards/${id}`, (err, data) => {
+            if (err) throw err;
+            console.log('Kart silindi.');
+        });*/
         const todoDelete= await todo.findByIdAndDelete(id)
         if(todoDelete){
             return res.status(200).json({
@@ -127,11 +207,11 @@ const todoGet = async(req,res)=>{
 
 }
 
-
 module.exports={
     todoAdd,
     todoGetAll,
     todoUpdate,
     todoDelete,
     todoGet
+
 }
