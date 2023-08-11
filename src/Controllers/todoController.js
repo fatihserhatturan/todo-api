@@ -1,11 +1,39 @@
 const todo= require("../Models/todoModel")
+const cardid= require("../Models/cardIDModel")
 const Trello = require('node-trello');
 const trello = new Trello('3d03980882bec6776becfed7a8d74932', 'ATTAaa891ab7344037bc73fb2de5fe420722889d26ec907813d91ee208f5590638a7318EFFA0');
-const targetListID = '64d5113de931557c1c2dc7c7'
+
+async function getTargetCardID() {
+    try {
+        // Veritabanından hedef veriyi çekin (örneğin, bir belirli kriterle)
+        const targetTodo = await cardid.findOne({  }).exec();
+
+        if (targetTodo) {
+            const targetCardID = targetTodo.cardID;
+
+            // Daha sonra bu targetCardID'yi kullanarak Trello API işlemlerini yapabilirsiniz
+            console.log('Hedef kart ID:', targetCardID);
+            return targetCardID;
+
+
+
+        } else {
+            console.log('Veri bulunamadi.');
+        }
+    } catch (error) {
+        console.error('Veri çekilirken hata oluştu:', error);
+    }
+}
 
 const todoAdd= async(req,res)=>{
 
-    console.log(req.body)
+    const targetListID = await getTargetCardID();
+
+    // Daha sonra bu targetCardID değerini kullanabilirsiniz
+    console.log('Ana fonksiyon içinde hedef kart ID:', targetListID);
+
+
+   // console.log(req.body)
     try {
         const _todo= await todo.findOne({
             name:req.body.name
@@ -32,6 +60,7 @@ const todoAdd= async(req,res)=>{
                 message:"Kayit Oluşturulurken Bir Hata Meydana Geldi..."+err
             })
         })
+
         trello.post('/1/cards', { name:req.body.name , idList: targetListID }, (err, data) => {
             if (err) throw err;
             console.log('Kart oluşturuldu:', data);
@@ -71,6 +100,7 @@ const todoUpdate = async(req,res)=>{
     const{id}=req.params
 
 
+    const targetListID = await getTargetCardID();
 
 
     try {
@@ -136,6 +166,8 @@ const todoUpdate = async(req,res)=>{
 
 const todoDelete = async(req,res)=>{
 
+    const targetListID = await getTargetCardID();
+
 
     const{id}=req.params
 
@@ -151,7 +183,7 @@ const todoDelete = async(req,res)=>{
 
                 // Kart listesini döngü ile gez
                 for (const card of cards) {
-                  
+
                     if (card.name === targetCardName.name) {
                         console.log(targetCardName.name)
                         const targetCardID = card.id;

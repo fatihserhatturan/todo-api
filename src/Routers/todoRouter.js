@@ -2,8 +2,11 @@ const router= require("express").Router()
 const todoController = require("../Controllers/todoController")
 const filtercontroller = require("../Controllers/filterController")
 const sortController = require("../Controllers/sortController")
+const cardController = require("../Controllers/cardController")
 
 router.post("/todo",todoController.todoAdd)
+
+router.post("/card",cardController.cardAdd)
 
 router.get("/todo",todoController.todoGetAll)
 
