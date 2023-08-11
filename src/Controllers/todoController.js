@@ -136,24 +136,32 @@ const todoUpdate = async(req,res)=>{
 
 const todoDelete = async(req,res)=>{
 
+
     const{id}=req.params
 
+    const targetCardName = await todo.findById(id);
+
     try {
-        console.log("girdi")
+
         trello.get(`/1/lists/${targetListID}/cards`, (err, cards) => {
             if (err) {
                 console.error('Kartlar alinamadi:', err);
             } else {
-                console.log("girdi")
-                console.log(id)
+
 
                 // Kart listesini döngü ile gez
                 for (const card of cards) {
-                    console.log("girdi")
-                    if (card.id === id) {
-                        //console.log("girdi")
+                  
+                    if (card.name === targetCardName.name) {
+                        console.log(targetCardName.name)
                         const targetCardID = card.id;
                         console.log(`Hedef kartin ID'si: ${targetCardID}`);
+
+                        trello.del(`/1/cards/${targetCardID}`, (err, data) => {
+                            if (err) throw err;
+                            console.log('Kart silindi.');
+                        });
+
                         break; // Eşleşme bulunduğunda döngüyü sonlandır
                     }
                 }
@@ -161,11 +169,8 @@ const todoDelete = async(req,res)=>{
         });
 
 
-        /*
-        trello.del(`/1/cards/${id}`, (err, data) => {
-            if (err) throw err;
-            console.log('Kart silindi.');
-        });*/
+
+
         const todoDelete= await todo.findByIdAndDelete(id)
         if(todoDelete){
             return res.status(200).json({
