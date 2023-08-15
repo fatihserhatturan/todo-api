@@ -1,10 +1,11 @@
 const todo= require("../Models/cardIDModel")
+const axios = require('axios');
 
 const cardAdd= async(req,res)=>{
 
     console.log(req.body)
     try {
-       
+
         const todoAdd= new todo(req.body)
 
         await todoAdd.save()
@@ -21,6 +22,18 @@ const cardAdd= async(req,res)=>{
                 message:"Kayit Oluşturulurken Bir Hata Meydana Geldi..."+err
             })
         })
+        /*
+        const postdata = {
+
+            cardID: '64d5113de931557c1c2dc7c7fattiturn'
+
+        }*/
+
+
+      //  const response = await axios.post('http://localhost:5000/api/card',postdata);
+
+        console.log('API Yaniti:', response.data);
+
 
 
     } catch (error) {
