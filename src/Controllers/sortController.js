@@ -18,9 +18,13 @@ const sortEarly = async(req,res)=>{
           return dateA - dateB;
         });
 
-       
 
-        res.status(200).json(sortedData);
+
+       // res.status(200).json(sortedData);
+       return res.status(200).json({
+        success:true,
+        data:sortedData
+    })
       } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
@@ -49,7 +53,10 @@ const sortLate = async(req,res)=>{
 
 
 
-        res.status(200).json(sortedData);
+        return res.status(200).json({
+          success:true,
+          data:sortedData
+      })
       } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
