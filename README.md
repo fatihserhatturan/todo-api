@@ -93,9 +93,9 @@ Use the `BLANK_README.md` to get started.
 
 This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
-* [![Nodejs][Next.js]][Next-url]
-* [![Express][React.js]][React-url]
-* [![.env][Vue.js]][Vue-url]
+* [![Nodejs][Node.js]][Next-url]
+* [![Express][Express.js]][React-url]
+* [![.env][.env]][Vue-url]
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
